@@ -11,10 +11,31 @@ namespace ControleDePatrimonios.Controllers
     {
         public IActionResult Index()
         {
-            List<Marca> marca = new List<Marca>();
-            marca.Add(new Marca { MarcaId = 1, Nome = "Teste do nome" });
-            marca.Add(new Marca { MarcaId = 2 , Nome = "Teste do nome 2" });
-            return View(marca);
+            List<Marca> list = new MarcaDAO().Listar();
+
+            return View(list);
+            // return Json(marca); // resultado em JSON
+        }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        public IActionResult ListAllJSon()
+        {
+            List<Marca> list = new MarcaDAO().Listar();
+            return Json(list);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(Marca marca)
+        {
+            MarcaDAO marcaDAO = new MarcaDAO();
+            marcaDAO.Insert(marca);
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }

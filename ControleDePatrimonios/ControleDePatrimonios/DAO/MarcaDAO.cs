@@ -5,16 +5,24 @@ using System.Threading.Tasks;
 using System.Data;
 using System.Data.SqlClient;
 
-namespace ControleDePatrimonios.DAO
+namespace ControleDePatrimonios.Models
 {
     public class MarcaDAO
     {
-        public string Listar()
+        public List<Marca> Listar()
         {
-            SqlConnectionStringBuilder stringBuilder = new SqlConnectionStringBuilder();
-            SqlConnection connection = new SqlConnection();
+            // SqlConnectionStringBuilder stringBuilder = new SqlConnectionStringBuilder();
+            // SqlConnection connection = new SqlConnection();
 
-                return "Esse texto veio da MarcaDAO";
+            List<Marca> marca = new List<Marca>();
+            marca.Add(new Marca { MarcaId = 1, Nome = "Teste do nome" });
+            marca.Add(new Marca { MarcaId = 2, Nome = "Teste do nome 2" });
+            return marca;
+        }
+
+        public void Insert(Marca marca)
+        {
+            // Implementar
         }
     }
 }
