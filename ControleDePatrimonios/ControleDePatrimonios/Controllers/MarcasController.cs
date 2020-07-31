@@ -11,7 +11,7 @@ namespace ControleDePatrimonios.Controllers
     {
         public IActionResult Index()
         {
-            List<Marca> list = new MarcaDAO().Listar();
+            List<Marca> list = new MarcaDAO().FindAll();
 
             return View(list);
             // return Json(marca); // resultado em JSON
@@ -24,7 +24,7 @@ namespace ControleDePatrimonios.Controllers
 
         public IActionResult ListAllJSon()
         {
-            List<Marca> list = new MarcaDAO().Listar();
+            List<Marca> list = new MarcaDAO().FindAll();
             return Json(list);
         }
 
@@ -32,8 +32,33 @@ namespace ControleDePatrimonios.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Marca marca)
         {
-            MarcaDAO marcaDAO = new MarcaDAO();
-            marcaDAO.Insert(marca);
+            MarcaDAO dao = new MarcaDAO();
+            dao.Insert(marca);
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult Delete(int? id)
+        {
+
+            // Verificar se o int é válido
+
+            // MarcaDAO dao = new MarcaDAO();
+            // Marca marca = dao.FindById(id);
+
+            // Verificar se a marca não é nulo;
+
+            // Apagar a instanciação abaixo;
+            Marca marca = new Marca { MarcaId = 1, Nome = "Marca teste 1" };
+            return View(marca);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete(int id)
+        {
+            MarcaDAO dao = new MarcaDAO(); ;
+            dao.Remove(id);
 
             return RedirectToAction(nameof(Index));
         }

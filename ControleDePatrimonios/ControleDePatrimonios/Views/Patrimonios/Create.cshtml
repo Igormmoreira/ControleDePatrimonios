@@ -1,4 +1,4 @@
-﻿@model ControleDePatrimonios.Models.Patrimonio;
+﻿@model ControleDePatrimonios.Models.ViewModels.PatrimonioFormViewModel;
 
 @{
     ViewData["Title"] = "Novo Patrimônio";
@@ -12,21 +12,22 @@
     <div class="Col-md-4">
         <form asp-action="Create">
             <div class="form-group">
-                <label asp-for="Nome" class="control-label"></label>
-                <input asp-for="Nome" class="form-control" />
+                <label asp-for="Patrimonio.Nome" class="control-label"></label>
+                <input asp-for="Patrimonio.Nome" class="form-control" />
 
-                <label asp-for="MarcaID" class="control-label"></label>
-                <input asp-for="MarcaID" class="form-control" />
+                <label asp-for="Patrimonio.MarcaID" class="control-label"></label>
+                <select asp-for="Patrimonio.MarcaID" asp-items="@(new SelectList(Model.Marcas, "MarcaId", "Nome" ))" class="form-control"></select>
 
-                <label asp-for="Descricao" class="control-label"></label>
-                <input asp-for="Descricao" class="form-control" />
+                <label asp-for="Patrimonio.Descricao" class="control-label"></label>
+                <input asp-for="Patrimonio.Descricao" class="form-control" />
 
-                <label asp-for="NumeroTombo" class="control-label"></label>
-                <input asp-for="NumeroTombo" class="form-control" />
+                <label asp-for="Patrimonio.NumeroTombo" class="control-label"></label>
+                <input asp-for="Patrimonio.NumeroTombo" class="form-control" />
+
             </div>
             <div>
-                <input type="submit" value="Salvar" class="btn btn-light" />
-
+                <input type="submit" value="Salvar" class="btn btn-light" />                
+                <a asp-action="Index"> <input type="button" value="Voltar" class="btn btn-dark" asp-action="Index" /> </a>
             </div>
         </form>
 
