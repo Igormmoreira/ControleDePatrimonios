@@ -11,13 +11,28 @@ namespace ControleDePatrimonios.Models
     {
         public List<Marca> FindAll()
         {
-            // SqlConnectionStringBuilder stringBuilder = new SqlConnectionStringBuilder();
-            // SqlConnection connection = new SqlConnection();
-
             List<Marca> marca = new List<Marca>();
-            marca.Add(new Marca { MarcaId = 1, Nome = "Teste do nome" });
-            marca.Add(new Marca { MarcaId = 2, Nome = "Teste do nome 2" });
+            SqlConnectionStringBuilder stringBuilder = new SqlConnectionStringBuilder(@"Data Source=DESKTOP-S6B4635\SQLEXPRESS;Initial Catalog=PatrimonioDB;Integrated Security=True");
+            SqlConnection connection = new SqlConnection(stringBuilder.ConnectionString);
 
+            // SqlConnection connection = new SqlConnection(@"Data Source = DESKTOP - S6B4635\SQLEXPRESS; Initial Catalog = PatrimonioDB; Integrated Security = True");
+
+            //new SqlConnection(ConfigurationManager.ConnectionStrings["PatrimonioDB"].ConnectionString);
+
+            SqlCommand command = new SqlCommand(" SELECT * FROM MARCAS ", connection);
+            connection.Open();
+
+            SqlDataAdapter dataAdapter = new SqlDataAdapter(command);
+            DataTable table = new DataTable();
+            dataAdapter.Fill(table);
+
+            foreach (DataRow linha in table.Rows)
+            {
+                int id = int.Parse(linha["ID"].ToString());
+                string nome = linha["NOME"].ToString();
+
+                marca.Add(new Marca { MarcaId = id, Nome = nome });
+            }
             return marca;
         }
 
