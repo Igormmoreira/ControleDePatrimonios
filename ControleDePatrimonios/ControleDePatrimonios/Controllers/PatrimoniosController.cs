@@ -12,14 +12,7 @@ namespace ControleDePatrimonios.Controllers
     {
         public IActionResult Index()
         {
-            //List<Patrimonio> list = _patrimonioServices.FindAll();
-            //return View(list);
-
             List<Patrimonio> patrimonios = new PatrimonioDAO().FindAll();
-
-            //List<Patrimonio> patrimonios = new List<Patrimonio>();
-            //patrimonios.Add(new Patrimonio { Descricao = "Teste da descrição", MarcaID = 1, Nome = "Teste do nome", NumeroTombo = 1 });
-            //patrimonios.Add(new Patrimonio { Descricao = "Teste da descrição 2", MarcaID = 1, Nome = "Teste do nome 2", NumeroTombo = 1 });
 
             return View(patrimonios); // resultado em View
             // return Json(patrimonios); // resultado em JSON
@@ -41,26 +34,29 @@ namespace ControleDePatrimonios.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Patrimonio patrimonios)
+        public IActionResult Create(PatrimonioFormViewModel patrimonios)
         {
             PatrimonioDAO dao = new PatrimonioDAO();
-            dao.Insert(patrimonios);
+            dao.Insert(patrimonios.Patrimonio);
 
             return RedirectToAction(nameof(Index));
         }
 
         public IActionResult Delete(int? id)
         {
-  
-            // Verificar se o int é válido
-            
-            // PatrimonioDAO dao = new PatrimonioDAO();
-            // Patrimonio patrimonio = dao.FindById(id);
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-            // Verificar se o patrimonio não é nulo;
+            PatrimonioDAO dao = new PatrimonioDAO();
+            Patrimonio patrimonio = dao.FindById(id.Value);
 
-            // Apagar a instanciação abaixo;
-            Patrimonio patrimonio = new Patrimonio { Descricao = "Teste da descrição", MarcaID = 1, Nome = "Teste do nome", NumeroTombo = 1, Id = 1 };
+            if (patrimonio == null)
+            {
+                return NotFound();
+            }
+
             return View(patrimonio);
         }
 

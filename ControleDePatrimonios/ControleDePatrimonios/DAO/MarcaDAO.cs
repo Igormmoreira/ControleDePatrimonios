@@ -9,20 +9,25 @@ namespace ControleDePatrimonios.Models
 {
     public class MarcaDAO
     {
+        private string ConStr = @"Data Source=DESKTOP-S6B4635\SQLEXPRESS;Initial Catalog=PatrimonioDB;Integrated Security=True";
+
+        private SqlDataAdapter ExecuteSQL(string query)
+        {
+            //new SqlConnection(ConfigurationManager.ConnectionStrings["PatrimonioDB"].ConnectionString);
+            SqlConnectionStringBuilder stringBuilder = new SqlConnectionStringBuilder(ConStr);
+            SqlConnection connection = new SqlConnection(stringBuilder.ConnectionString);
+
+            SqlCommand command = new SqlCommand(query, connection);
+            connection.Open();
+
+            return new SqlDataAdapter(command);
+        }
+
         public List<Marca> FindAll()
         {
             List<Marca> marca = new List<Marca>();
-            SqlConnectionStringBuilder stringBuilder = new SqlConnectionStringBuilder(@"Data Source=DESKTOP-S6B4635\SQLEXPRESS;Initial Catalog=PatrimonioDB;Integrated Security=True");
-            SqlConnection connection = new SqlConnection(stringBuilder.ConnectionString);
 
-            // SqlConnection connection = new SqlConnection(@"Data Source = DESKTOP - S6B4635\SQLEXPRESS; Initial Catalog = PatrimonioDB; Integrated Security = True");
-
-            //new SqlConnection(ConfigurationManager.ConnectionStrings["PatrimonioDB"].ConnectionString);
-
-            SqlCommand command = new SqlCommand(" SELECT * FROM MARCAS ", connection);
-            connection.Open();
-
-            SqlDataAdapter dataAdapter = new SqlDataAdapter(command);
+            SqlDataAdapter dataAdapter = ExecuteSQL(" SELECT * FROM MARCAS ");
             DataTable table = new DataTable();
             dataAdapter.Fill(table);
 
@@ -38,12 +43,35 @@ namespace ControleDePatrimonios.Models
 
         public void Insert(Marca marca)
         {
-            // Implementar
+            string sql = " INSERT INTO MARCAS(NOME) VALUES('" + marca.Nome + "') ";
+
+            SqlDataAdapter dataAdapter = ExecuteSQL(sql);
+            DataTable table = new DataTable();
+            dataAdapter.Fill(table);
+
+            // Tratar exceção UNIQUE no nome da marca
+            // SqlException: Violação da restrição UNIQUE KEY 'UQ__MARCAS__E2AB1FF41D19ADD2'. Não é possível inserir a chave duplicada no objeto 'dbo.MARCAS'. O valor de chave duplicada é (Daisy).
         }
 
-        public Marca FindById(int id)
+        public Marca FindById(int chave)
         {
-            return new Marca(); // Implementar busca ao invez de criar um novo
+            Marca marca = new Marca();
+
+            SqlDataAdapter dataAdapter = ExecuteSQL(" SELECT * FROM MARCAS WHERE MARCAS.ID = " + chave);
+            DataTable table = new DataTable();
+            dataAdapter.Fill(table);
+            
+            // Não é assim que pega os dados do dataset
+            //marca.MarcaId = int.Parse(table.Rows.DataRow["ID"].ToString());
+            //marca.Nome = table.Columns["NOME"].ToString();
+
+            foreach (DataRow linha in table.Rows)
+            {
+                marca.MarcaId = int.Parse(linha["ID"].ToString());
+                marca.Nome = linha["NOME"].ToString();
+            }
+
+            return marca;
         }
 
         public void Remove(int id)
@@ -53,7 +81,11 @@ namespace ControleDePatrimonios.Models
 
         public void Remove(Marca marca)
         {
-            // Implementar remoção por objeto
+            string sql = " DELETE FROM MARCAS WHERE MARCAS.ID = " + marca.MarcaId;
+
+            SqlDataAdapter dataAdapter = ExecuteSQL(sql);
+            DataTable table = new DataTable();
+            dataAdapter.Fill(table);
         }
     }
 }

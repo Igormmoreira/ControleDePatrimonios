@@ -40,16 +40,19 @@ namespace ControleDePatrimonios.Controllers
 
         public IActionResult Delete(int? id)
         {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-            // Verificar se o int é válido
+            MarcaDAO dao = new MarcaDAO();
+            Marca marca = dao.FindById(id.Value);
 
-            // MarcaDAO dao = new MarcaDAO();
-            // Marca marca = dao.FindById(id);
+            if (marca == null)
+            {
+                return NotFound();
+            }
 
-            // Verificar se a marca não é nulo;
-
-            // Apagar a instanciação abaixo;
-            Marca marca = new Marca { MarcaId = 1, Nome = "Marca teste 1" };
             return View(marca);
         }
 
