@@ -41,7 +41,7 @@ namespace ControleDePatrimonios.Models
             return marca;
         }
 
-        public void Insert(Marca marca)
+        public Marca Insert(Marca marca)
         {
             string sql = " INSERT INTO MARCAS(NOME) VALUES('" + marca.Nome + "') ";
 
@@ -49,6 +49,7 @@ namespace ControleDePatrimonios.Models
             DataTable table = new DataTable();
             dataAdapter.Fill(table);
 
+            return LastInserted();
             // Tratar exceção UNIQUE no nome da marca
             // SqlException: Violação da restrição UNIQUE KEY 'UQ__MARCAS__E2AB1FF41D19ADD2'. Não é possível inserir a chave duplicada no objeto 'dbo.MARCAS'. O valor de chave duplicada é (Daisy).
         }
@@ -98,6 +99,25 @@ namespace ControleDePatrimonios.Models
             SqlDataAdapter dataAdapter = ExecuteSQL(sql);
             DataTable table = new DataTable();
             dataAdapter.Fill(table);
+        }
+
+        public Marca LastInserted()
+        {
+            Marca marca = new Marca();
+
+            string sql = " SELECT * FROM MARCAS WHERE MARCAS.ID = (SELECT MAX(MARCAS.ID) FROM MARCAS) ";
+
+            SqlDataAdapter dataAdapter = ExecuteSQL(sql);
+            DataTable table = new DataTable();
+            dataAdapter.Fill(table);
+
+            foreach (DataRow linha in table.Rows)
+            {
+                marca.MarcaId = int.Parse(linha["ID"].ToString());
+                marca.Nome = linha["NOME"].ToString();
+            }
+
+            return marca;
         }
     }
 }

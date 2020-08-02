@@ -14,7 +14,6 @@ namespace ControleDePatrimonios.Controllers
             List<Marca> list = new MarcaDAO().FindAll();
 
             return View(list);
-            // return Json(marca); // resultado em JSON
         }
 
         public IActionResult Create()
@@ -33,9 +32,10 @@ namespace ControleDePatrimonios.Controllers
         public IActionResult Create(Marca marca)
         {
             MarcaDAO dao = new MarcaDAO();
-            dao.Insert(marca);
+            marca = dao.Insert(marca);
 
-            return RedirectToAction(nameof(Index));
+            return Json(marca);
+            // return RedirectToAction(nameof(Index));
         }
 
         public IActionResult Delete(int? id)
@@ -61,38 +61,12 @@ namespace ControleDePatrimonios.Controllers
         public IActionResult Delete(int id)
         {
             MarcaDAO dao = new MarcaDAO(); ;
+            Marca marca = dao.FindById(id);
             dao.Remove(id);
 
-            return RedirectToAction(nameof(Index));
+            return Json(marca);
+            // return RedirectToAction(nameof(Index));
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         public IActionResult Edit(int? id)
         {
@@ -123,7 +97,9 @@ namespace ControleDePatrimonios.Controllers
 
             MarcaDAO dao = new MarcaDAO();
             dao.Update(marca);
-            return RedirectToAction(nameof(Index));
+
+            return Json(marca);
+            // return RedirectToAction(nameof(Index));
         }
     }
 }

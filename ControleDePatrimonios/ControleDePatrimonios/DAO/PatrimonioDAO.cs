@@ -58,7 +58,7 @@ namespace ControleDePatrimonios.Models
             return patrimonios;
         }
 
-        public void Insert(Patrimonio patrimonio)
+        public Patrimonio Insert(Patrimonio patrimonio)
         {
             string sql = string.Format(" INSERT INTO PATRIMONIOS(NOME, DESCRICAO, IDMARCA) VALUES('{0}', '{1}', '{2}') ",
                 patrimonio.Nome, patrimonio.Descricao, patrimonio.MarcaID);
@@ -66,6 +66,8 @@ namespace ControleDePatrimonios.Models
             SqlDataAdapter dataAdapter = ExecuteSQL(sql);
             DataTable table = new DataTable();
             dataAdapter.Fill(table);
+
+            return LastInserted();
         }
 
         public Patrimonio FindById(int id)
@@ -133,6 +135,48 @@ namespace ControleDePatrimonios.Models
             SqlDataAdapter dataAdapter = ExecuteSQL(sql);
             DataTable table = new DataTable();
             dataAdapter.Fill(table);
+        }
+
+        public Patrimonio LastInserted()
+        {
+            Patrimonio patrimonio = new Patrimonio();
+
+            string sql =    "       SELECT PATRIMONIOS.ID,                             " +
+                            "              PATRIMONIOS.NOME,                           " +
+                            "              PATRIMONIOS.DESCRICAO,                      " +
+                            "              PATRIMONIOS.NUMEROTOMBO,                    " +
+                            "              PATRIMONIOS.IDMARCA,                        " +
+                            "              MARCAS.ID ID_FK,                            " +
+                            "              MARCAS.NOME NOME_MARCA                      " +
+                            "         FROM PATRIMONIOS                                 " +
+                            "    LEFT JOIN MARCAS ON PATRIMONIOS.IDMARCA = MARCAS.ID   " +
+                            "        WHERE PATRIMONIOS.ID =                            " +
+                            "      (SELECT MAX(PATRIMONIOS.ID) FROM PATRIMONIOS)       ";
+
+            SqlDataAdapter dataAdapter = ExecuteSQL(sql);
+            DataTable table = new DataTable();
+            dataAdapter.Fill(table);
+
+            foreach (DataRow linha in table.Rows)
+            {
+                int chave = int.Parse(linha["ID"].ToString());
+                string nome = linha["NOME"].ToString();
+                string descricao = linha["DESCRICAO"].ToString();
+                int numeroTombo = int.Parse(linha["NUMEROTOMBO"].ToString());
+
+                int marcaId = int.Parse(linha["ID_FK"].ToString());
+                string marcaNome = linha["NOME_MARCA"].ToString();
+
+                Marca marca = new Marca { MarcaId = marcaId, Nome = marcaNome };
+
+                patrimonio.Id = chave;
+                patrimonio.Nome = nome;
+                patrimonio.Descricao = descricao;
+                patrimonio.NumeroTombo = numeroTombo;
+                patrimonio.marca = marca;
+                patrimonio.MarcaID = marcaId;
+            }
+            return patrimonio;
         }
     }
 }

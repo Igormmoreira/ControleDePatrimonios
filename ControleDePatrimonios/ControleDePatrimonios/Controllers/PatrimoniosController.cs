@@ -37,9 +37,10 @@ namespace ControleDePatrimonios.Controllers
         public IActionResult Create(PatrimonioFormViewModel patrimonios)
         {
             PatrimonioDAO dao = new PatrimonioDAO();
-            dao.Insert(patrimonios.Patrimonio);
+            patrimonios.Patrimonio = dao.Insert(patrimonios.Patrimonio);
 
-            return RedirectToAction(nameof(Index));
+            return Json(patrimonios.Patrimonio);
+            //return RedirectToAction(nameof(Index));
         }
 
         public IActionResult Delete(int? id)
@@ -65,9 +66,11 @@ namespace ControleDePatrimonios.Controllers
         public IActionResult Delete(int id)
         {
             PatrimonioDAO dao = new PatrimonioDAO();
+            Patrimonio patrimonio = dao.FindById(id);
             dao.Remove(id);
 
-            return RedirectToAction(nameof(Index));
+            return Json(patrimonio);
+            //return RedirectToAction(nameof(Index));
         }
 
         public IActionResult Edit(int? id)
@@ -102,7 +105,9 @@ namespace ControleDePatrimonios.Controllers
 
             PatrimonioDAO dao = new PatrimonioDAO();
             dao.Update(patrimonios.Patrimonio);
-            return RedirectToAction(nameof(Index));
+
+            return Json(patrimonios.Patrimonio);
+            //return RedirectToAction(nameof(Index));
         }
     }
 }
