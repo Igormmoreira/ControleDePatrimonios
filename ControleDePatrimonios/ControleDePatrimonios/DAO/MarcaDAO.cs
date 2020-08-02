@@ -87,5 +87,17 @@ namespace ControleDePatrimonios.Models
             DataTable table = new DataTable();
             dataAdapter.Fill(table);
         }
+
+        public void Update(Marca marca)
+        {
+            string sql = string.Format( "  UPDATE MARCAS        " +
+                                        "     SET NOME = '{0}'  " +
+                                        "   WHERE ID = {1}      ",
+                                        marca.Nome, marca.MarcaId);
+
+            SqlDataAdapter dataAdapter = ExecuteSQL(sql);
+            DataTable table = new DataTable();
+            dataAdapter.Fill(table);
+        }
     }
 }

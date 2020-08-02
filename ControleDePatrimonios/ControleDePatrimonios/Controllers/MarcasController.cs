@@ -65,5 +65,65 @@ namespace ControleDePatrimonios.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        public IActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            MarcaDAO dao = new MarcaDAO();
+            Marca viewModel = dao.FindById(id.Value);
+
+            if (viewModel == null)
+            {
+                return NotFound();
+            }
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(int id, Marca marca)
+        {
+            if (id != marca.MarcaId)
+            {
+                return BadRequest();
+            }
+
+            MarcaDAO dao = new MarcaDAO();
+            dao.Update(marca);
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

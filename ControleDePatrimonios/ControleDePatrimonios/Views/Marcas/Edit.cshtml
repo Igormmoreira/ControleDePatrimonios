@@ -1,0 +1,27 @@
+﻿@model ControleDePatrimonios.Models.Marca
+
+@{
+    ViewData["Title"] = "Editar Marca";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<h4>Patrimônio</h4>
+<hr />
+<div class="row">
+    <div class="Col-md-4">
+        <form asp-action="Edit">
+            <input type="hidden" asp-for="MarcaId" />
+            <div class="form-group">
+                <label asp-for="Nome" class="control-label"></label>
+                <input asp-for="Nome" class="form-control" />
+            </div>
+            <div>
+                <input type="submit" value="Salvar" class="btn btn-light" />
+                <a asp-action="Index"> <input type="button" value="Voltar" class="btn btn-dark" asp-action="Index" /> </a>
+            </div>
+        </form>
+
+    </div>
+
+</div>
