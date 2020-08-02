@@ -1,4 +1,5 @@
 ﻿using ControleDePatrimonios.Models;
+using Microsoft.SqlServer.Server;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -115,8 +116,19 @@ namespace ControleDePatrimonios.Models
 
         public void Remove(Patrimonio patrimonio)
         {
-            // Implementar remoção por objeto
             string sql = " DELETE FROM PATRIMONIOS WHERE PATRIMONIOS.ID = " + patrimonio.Id;
+
+            SqlDataAdapter dataAdapter = ExecuteSQL(sql);
+            DataTable table = new DataTable();
+            dataAdapter.Fill(table);
+        }
+
+        public void Update(Patrimonio patrimonio)
+        {
+            string sql = string.Format( "  UPDATE PATRIMONIOS                                       " +
+                                        "     SET NOME = '{0}', DESCRICAO = '{1}', IDMARCA = {2}    " +
+                                        "   WHERE ID = {3}                                          ",
+                                        patrimonio.Nome, patrimonio.Descricao, patrimonio.MarcaID, patrimonio.Id); 
 
             SqlDataAdapter dataAdapter = ExecuteSQL(sql);
             DataTable table = new DataTable();

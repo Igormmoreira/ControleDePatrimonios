@@ -69,5 +69,40 @@ namespace ControleDePatrimonios.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+        public IActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            PatrimonioDAO dao = new PatrimonioDAO();
+            Patrimonio patrimonio = dao.FindById(id.Value);
+
+            if (patrimonio == null)
+            {
+                return NotFound();
+            }
+
+            MarcaDAO marca = new MarcaDAO();
+            List<Marca> marcas = marca.FindAll();
+            PatrimonioFormViewModel viewModel = new PatrimonioFormViewModel { Patrimonio = patrimonio, Marcas = marcas };
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(int id, PatrimonioFormViewModel patrimonios)
+        {
+            if (id != patrimonios.Patrimonio.Id)
+            {
+                return BadRequest();
+            }
+
+            PatrimonioDAO dao = new PatrimonioDAO();
+            dao.Update(patrimonios.Patrimonio);
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

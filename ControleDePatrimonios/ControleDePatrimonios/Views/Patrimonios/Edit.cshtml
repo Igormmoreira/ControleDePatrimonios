@@ -1,0 +1,35 @@
+﻿@model ControleDePatrimonios.Models.ViewModels.PatrimonioFormViewModel;
+
+@{
+    ViewData["Title"] = "Editar Patrimônio";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<h4>Patrimônio</h4>
+<hr />
+<div class="row">
+    <div class="Col-md-4">
+        <form asp-action="Edit">
+            <input type="hidden" asp-for="Patrimonio.Id" />
+
+            <div class="form-group">
+                <label asp-for="Patrimonio.Nome" class="control-label"></label>
+                <input asp-for="Patrimonio.Nome" class="form-control" />
+
+                <label asp-for="Patrimonio.MarcaID" class="control-label"></label>
+                <select asp-for="Patrimonio.MarcaID" asp-items="@(new SelectList(Model.Marcas, "MarcaId", "Nome" ))" class="form-control"></select>
+
+                <label asp-for="Patrimonio.Descricao" class="control-label"></label>
+                <input asp-for="Patrimonio.Descricao" class="form-control" />
+
+            </div>
+            <div>
+                <input type="submit" value="Salvar" class="btn btn-light" />
+                <a asp-action="Index"> <input type="button" value="Voltar" class="btn btn-dark" asp-action="Index" /> </a>
+            </div>
+        </form>
+
+    </div>
+
+</div>
