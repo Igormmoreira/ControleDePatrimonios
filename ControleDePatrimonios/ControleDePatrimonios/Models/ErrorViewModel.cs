@@ -1,5 +1,3 @@
-using System;
-
 namespace ControleDePatrimonios.Models
 {
     public class ErrorViewModel
