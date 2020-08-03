@@ -101,5 +101,18 @@ namespace ControleDePatrimonios.Controllers
             return Json(marca);
             // return RedirectToAction(nameof(Index));
         }
+
+        public IActionResult Procurar()
+        {
+            return View();
+        }
+
+        public IActionResult SearchJson(Marca marca)
+        {
+            MarcaDAO dao = new MarcaDAO();
+            marca = dao.FindById(marca.MarcaId);
+
+            return Json(marca);
+        }
     }
 }

@@ -109,5 +109,18 @@ namespace ControleDePatrimonios.Controllers
             return Json(patrimonios.Patrimonio);
             //return RedirectToAction(nameof(Index));
         }
+
+        public IActionResult Procurar()
+        {
+            return View();
+        }
+
+        public IActionResult SearchJson(PatrimonioFormViewModel patrimonioModel)
+        {
+            PatrimonioDAO dao = new PatrimonioDAO();
+            Patrimonio patrimonio = dao.FindById(patrimonioModel.Patrimonio.Id);
+
+            return Json(patrimonio);
+        }
     }
 }

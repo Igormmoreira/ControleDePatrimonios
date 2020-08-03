@@ -1,0 +1,25 @@
+﻿@model ControleDePatrimonios.Models.ViewModels.PatrimonioFormViewModel;
+
+@{
+    ViewData["Title"] = "Procurar";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<hr />
+<div class="row">
+    <div class="Col-md-4">
+        <form asp-action="SearchJson">
+            <div class="form-group">
+                <label asp-for="Patrimonio.Id" class="control-label"></label>
+                <input asp-for="Patrimonio.Id" class="form-control" />
+            </div>
+            <div>
+                <input type="submit" value="Procurar" class="btn btn-light" />
+                <a asp-action="Index"> <input type="button" value="Voltar" class="btn btn-dark" asp-action="Index" /> </a>
+            </div>
+        </form>
+
+    </div>
+
+</div>
